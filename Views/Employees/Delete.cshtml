@@ -1,0 +1,41 @@
+﻿@model EmployeeManagementSystem.Models.Employee
+
+<h2>Delete Employee</h2>
+
+<h4>Are you sure you want to delete this employee?</h4>
+
+<table class="table table-bordered">
+
+    <tr>
+        <th>Employee Id</th>
+        <td>@Model.EmployeeId</td>
+    </tr>
+
+    <tr>
+        <th>Name</th>
+        <td>@Model.FirstName @Model.LastName</td>
+    </tr>
+
+    <tr>
+        <th>Email</th>
+        <td>@Model.Email</td>
+    </tr>
+
+</table>
+
+<form asp-action="Delete">
+
+    <input type="hidden"
+           asp-for="EmployeeId" />
+
+    <button type="submit"
+            class="btn btn-danger">
+        Delete
+    </button>
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        Cancel
+    </a>
+
+</form>

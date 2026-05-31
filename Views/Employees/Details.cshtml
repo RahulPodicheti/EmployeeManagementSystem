@@ -1,0 +1,51 @@
+﻿@model EmployeeManagementSystem.Models.Employee
+
+<h2>Employee Details</h2>
+
+<table class="table table-bordered">
+
+    <tr>
+        <th>Employee Id</th>
+        <td>@Model.EmployeeId</td>
+    </tr>
+
+    <tr>
+        <th>First Name</th>
+        <td>@Model.FirstName</td>
+    </tr>
+
+    <tr>
+        <th>Last Name</th>
+        <td>@Model.LastName</td>
+    </tr>
+
+    <tr>
+        <th>Email</th>
+        <td>@Model.Email</td>
+    </tr>
+
+    <tr>
+        <th>Phone</th>
+        <td>@Model.PhoneNumber</td>
+    </tr>
+
+    <tr>
+        <th>Department</th>
+        <td>@Model.Department</td>
+    </tr>
+
+    <tr>
+        <th>Salary</th>
+        <td>@Model.Salary</td>
+    </tr>
+
+    <tr>
+        <th>Joining Date</th>
+        <td>@Model.JoiningDate.ToShortDateString()</td>
+    </tr>
+
+</table>
+
+<a asp-action="Index" class="btn btn-secondary">
+    Back
+</a>

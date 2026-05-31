@@ -1,0 +1,57 @@
+﻿@model IEnumerable<EmployeeManagementSystem.Models.Department>
+
+<h2>Departments</h2>
+
+<p>
+    <a asp-action="Create"
+       class="btn btn-primary">
+        Add Department
+    </a>
+</p>
+
+<table class="table table-bordered table-striped">
+
+    <thead>
+        <tr>
+            <th>Department Id</th>
+            <th>Department Name</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.DepartmentId</td>
+
+                <td>@item.DepartmentName</td>
+
+                <td>
+                    @(item.IsActive
+                        ? "Active"
+                        : "Inactive")
+                </td>
+                <td>
+
+                    <a asp-action="Edit"
+                       asp-route-id="@item.DepartmentId"
+                       class="btn btn-warning btn-sm">
+                        Edit
+                    </a>
+
+                    <a asp-action="Delete"
+                       asp-route-id="@item.DepartmentId"
+                       class="btn btn-danger btn-sm">
+                        Delete
+                    </a>
+
+                </td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>

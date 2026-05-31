@@ -1,0 +1,111 @@
+﻿@model EmployeeManagementSystem.ViewModels.EmployeeViewModel
+
+<h2>Create Employee</h2>
+
+<form asp-action="Create"
+      method="post"
+      enctype="multipart/form-data">
+
+    <div asp-validation-summary="ModelOnly"
+         class="text-danger mb-3">
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Employee.FirstName" class="form-label"></label>
+        <input asp-for="Employee.FirstName" class="form-control" />
+        <span asp-validation-for="Employee.FirstName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Employee.LastName" class="form-label"></label>
+        <input asp-for="Employee.LastName" class="form-control" />
+        <span asp-validation-for="Employee.LastName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Employee.Email" class="form-label"></label>
+        <input asp-for="Employee.Email" class="form-control" />
+        <span asp-validation-for="Employee.Email" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Employee.PhoneNumber" class="form-label"></label>
+        <input asp-for="Employee.PhoneNumber" class="form-control" />
+        <span asp-validation-for="Employee.PhoneNumber" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Employee.Department" class="form-label"></label>
+
+        <select asp-for="Employee.Department"
+                asp-items="Model.Departments"
+                class="form-select">
+
+            <option value="">
+                -- Select Department --
+            </option>
+
+        </select>
+
+        <span asp-validation-for="Employee.Department"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Employee.Salary" class="form-label"></label>
+        <input asp-for="Employee.Salary" class="form-control" />
+        <span asp-validation-for="Employee.Salary" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Employee.JoiningDate" class="form-label"></label>
+        <input asp-for="Employee.JoiningDate"
+               type="date"
+               class="form-control" />
+        <span asp-validation-for="Employee.JoiningDate"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Photo"
+               class="form-label">
+            Employee Photo
+        </label>
+
+        <input asp-for="Photo"
+               type="file"
+               accept=".jpg,.jpeg,.png,.gif,.webp"
+               class="form-control" />
+
+        <small class="text-success">
+            ✓ Allowed: JPG, JPEG, PNG, GIF, WEBP
+        </small>
+
+        <br />
+
+        <small class="text-danger">
+            ✗ Not Allowed: PDF, DOC, DOCX, XLSX, ZIP
+        </small>
+
+        <span asp-validation-for="Photo"
+              class="text-danger"></span>
+    </div>
+
+    <button type="submit"
+            class="btn btn-primary">
+        Save
+    </button>
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        Back
+    </a>
+
+</form>
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

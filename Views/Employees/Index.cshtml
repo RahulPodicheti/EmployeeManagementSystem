@@ -1,0 +1,130 @@
+﻿@model EmployeeManagementSystem.ViewModels.EmployeeListViewModel
+
+<h2>Employees</h2>
+
+<p>
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-action="Create" class="btn btn-primary">
+            Add Employee
+        </a>
+    }
+</p>
+
+<form method="get" asp-action="Index" class="mb-3">
+
+    <div class="row">
+
+        <div class="col-md-4">
+            <input type="text"
+                   name="searchText"
+                   value="@ViewBag.SearchText"
+                   class="form-control"
+                   placeholder="Search Employee..." />
+        </div>
+
+        <div class="col-md-2">
+            <button type="submit"
+                    class="btn btn-primary">
+                Search
+            </button>
+        </div>
+
+    </div>
+
+</form>
+
+<table class="table table-bordered table-striped align-middle">
+
+    <thead>
+        <tr>
+            <th>Photo</th>
+            <th>Id</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Department</th>
+            <th>Salary</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var employee in Model.Employees)
+        {
+            <tr>
+
+                <td>
+                    @if (!string.IsNullOrEmpty(employee.PhotoPath))
+                    {
+                        <img src="@employee.PhotoPath"
+                             width="60"
+                             height="60"
+                             class="rounded-circle border" />
+                    }
+                    else
+                    {
+                        <span>No Photo</span>
+                    }
+                </td>
+
+                <td>@employee.EmployeeId</td>
+                <td>@employee.FirstName</td>
+                <td>@employee.LastName</td>
+                <td>@employee.Email</td>
+                <td>@employee.Department</td>
+                <td>@employee.Salary</td>
+
+                <td>
+
+                    <a asp-action="Details"
+                       asp-route-id="@employee.EmployeeId"
+                       class="btn btn-info btn-sm">
+                        Details
+                    </a>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit"
+                           asp-route-id="@employee.EmployeeId"
+                           class="btn btn-warning btn-sm">
+                            Edit
+                        </a>
+
+                        <a asp-action="Delete"
+                           asp-route-id="@employee.EmployeeId"
+                           class="btn btn-danger btn-sm">
+                            Delete
+                        </a>
+                    }
+
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>
+
+<nav>
+    <ul class="pagination">
+
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+
+                <a class="page-link"
+                   asp-action="Index"
+                   asp-route-page="@i">
+
+                    @i
+
+                </a>
+
+            </li>
+        }
+
+    </ul>
+</nav>
