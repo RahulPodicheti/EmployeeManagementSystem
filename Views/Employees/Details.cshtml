@@ -1,51 +1,107 @@
 ﻿@model EmployeeManagementSystem.Models.Employee
 
-<h2>Employee Details</h2>
+<div class="row justify-content-center">
 
-<table class="table table-bordered">
+    <div class="col-md-8">
 
-    <tr>
-        <th>Employee Id</th>
-        <td>@Model.EmployeeId</td>
-    </tr>
+        <div class="card shadow">
 
-    <tr>
-        <th>First Name</th>
-        <td>@Model.FirstName</td>
-    </tr>
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">
+                    Employee Details
+                </h3>
+            </div>
 
-    <tr>
-        <th>Last Name</th>
-        <td>@Model.LastName</td>
-    </tr>
+            <div class="card-body">
 
-    <tr>
-        <th>Email</th>
-        <td>@Model.Email</td>
-    </tr>
+                <div class="text-center mb-4">
 
-    <tr>
-        <th>Phone</th>
-        <td>@Model.PhoneNumber</td>
-    </tr>
+                    @if (!string.IsNullOrEmpty(Model.PhotoPath))
+                    {
+                        <img src="@Model.PhotoPath"
+                             width="150"
+                             height="150"
+                             class="rounded-circle border border-3" />
+                    }
+                    else
+                    {
+                        <img src="https://via.placeholder.com/150"
+                             class="rounded-circle border border-3" />
+                    }
 
-    <tr>
-        <th>Department</th>
-        <td>@Model.Department</td>
-    </tr>
+                </div>
 
-    <tr>
-        <th>Salary</th>
-        <td>@Model.Salary</td>
-    </tr>
+                <table class="table table-bordered">
 
-    <tr>
-        <th>Joining Date</th>
-        <td>@Model.JoiningDate.ToShortDateString()</td>
-    </tr>
+                    <tr>
+                        <th>Employee ID</th>
+                        <td>@Model.EmployeeId</td>
+                    </tr>
 
-</table>
+                    <tr>
+                        <th>First Name</th>
+                        <td>@Model.FirstName</td>
+                    </tr>
 
-<a asp-action="Index" class="btn btn-secondary">
-    Back
-</a>
+                    <tr>
+                        <th>Last Name</th>
+                        <td>@Model.LastName</td>
+                    </tr>
+
+                    <tr>
+                        <th>Email</th>
+                        <td>@Model.Email</td>
+                    </tr>
+
+                    <tr>
+                        <th>Phone Number</th>
+                        <td>@Model.PhoneNumber</td>
+                    </tr>
+
+                    <tr>
+                        <th>Department</th>
+                        <td>@Model.Department</td>
+                    </tr>
+
+                    <tr>
+                        <th>Salary</th>
+                        <td>₹@Model.Salary</td>
+                    </tr>
+
+                    <tr>
+                        <th>Joining Date</th>
+                        <td>@Model.JoiningDate.ToShortDateString()</td>
+                    </tr>
+
+                    <tr>
+                        <th>Status</th>
+                        <td>
+                            @if (Model.IsActive)
+                            {
+                                <span class="badge bg-success">
+                                    Active
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">
+                                    Inactive
+                                </span>
+                            }
+                        </td>
+                    </tr>
+
+                </table>
+
+                <a asp-action="Index"
+                   class="btn btn-secondary">
+                    Back
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

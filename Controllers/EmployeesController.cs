@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using ClosedXML.Excel;
+using Microsoft.Extensions.Logging;
 
 namespace EmployeeManagementSystem.Controllers
 {
@@ -14,15 +16,18 @@ namespace EmployeeManagementSystem.Controllers
         private readonly IEmployeeService _employeeService;
         private readonly IDepartmentService _departmentService;
         private readonly IWebHostEnvironment _environment;
+        private readonly ILogger<EmployeesController> _logger;
 
         public EmployeesController(
             IEmployeeService employeeService,
             IDepartmentService departmentService,
-            IWebHostEnvironment environment)
+            IWebHostEnvironment environment,
+            ILogger<EmployeesController> logger)
         {
             _employeeService = employeeService;
             _departmentService = departmentService;
             _environment = environment;
+            _logger = logger;
         }
 
         public async Task<IActionResult> Index(
@@ -171,6 +176,8 @@ namespace EmployeeManagementSystem.Controllers
 
             await _employeeService
                 .AddEmployeeAsync(model.Employee);
+            _logger.LogInformation("Employee Created: {Email}", model.Employee.Email);
+            TempData["Success"] = "Employee created successfully.";
 
             return RedirectToAction(nameof(Index));
         }
@@ -195,7 +202,22 @@ namespace EmployeeManagementSystem.Controllers
             if (employee == null)
                 return NotFound();
 
-            return View(employee);
+            var departments =
+                await _departmentService.GetAllDepartmentsAsync();
+
+            var model = new EmployeeViewModel
+            {
+                Employee = employee,
+
+                Departments = departments.Select(d =>
+                    new SelectListItem
+                    {
+                        Value = d.DepartmentName,
+                        Text = d.DepartmentName
+                    })
+            };
+
+            return View(model);
         }
 
         [HttpPost]
@@ -260,6 +282,8 @@ namespace EmployeeManagementSystem.Controllers
             if (ModelState.IsValid)
             {
                 await _employeeService.UpdateEmployeeAsync(employee);
+                _logger.LogInformation("Employee Updated: {EmployeeId}", employee.EmployeeId);
+                TempData["Success"] = "Employee updated successfully.";
 
                 return RedirectToAction(nameof(Index));
             }
@@ -285,8 +309,65 @@ namespace EmployeeManagementSystem.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _employeeService.DeleteEmployeeAsync(id);
-
+            TempData["Success"] = "Employee deleted successfully.";
+            _logger.LogWarning( "Employee Deleted: {EmployeeId}", id);
             return RedirectToAction(nameof(Index));
+        }
+        [Authorize]
+        public async Task<IActionResult> ExportToExcel()
+        {
+            var employees =
+                await _employeeService.GetAllEmployeesAsync();
+
+            using var workbook =
+                new XLWorkbook();
+
+            var worksheet =
+                workbook.Worksheets.Add("Employees");
+
+            worksheet.Cell(1, 1).Value = "Employee ID";
+            worksheet.Cell(1, 2).Value = "First Name";
+            worksheet.Cell(1, 3).Value = "Last Name";
+            worksheet.Cell(1, 4).Value = "Email";
+            worksheet.Cell(1, 5).Value = "Phone";
+            worksheet.Cell(1, 6).Value = "Department";
+            worksheet.Cell(1, 7).Value = "Salary";
+            worksheet.Cell(1, 8).Value = "Joining Date";
+            worksheet.Cell(1, 9).Value = "Status";
+
+            int row = 2;
+
+            foreach (var employee in employees)
+            {
+                worksheet.Cell(row, 1).Value = employee.EmployeeId;
+                worksheet.Cell(row, 2).Value = employee.FirstName;
+                worksheet.Cell(row, 3).Value = employee.LastName;
+                worksheet.Cell(row, 4).Value = employee.Email;
+                worksheet.Cell(row, 5).Value = employee.PhoneNumber;
+                worksheet.Cell(row, 6).Value = employee.Department;
+                worksheet.Cell(row, 7).Value = employee.Salary;
+                worksheet.Cell(row, 8).Value = employee.JoiningDate.ToShortDateString();
+                worksheet.Cell(row, 9).Value =
+                    employee.IsActive ? "Active" : "Inactive";
+
+                row++;
+            }
+
+            using var stream =
+                new MemoryStream();
+
+            workbook.SaveAs(stream);
+
+            var content =
+                stream.ToArray();
+
+            _logger.LogInformation(
+                "Employees Exported To Excel");
+
+            return File(
+                content,
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "Employees.xlsx");
         }
     }
 }

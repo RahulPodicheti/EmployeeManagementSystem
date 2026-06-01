@@ -1,13 +1,12 @@
-﻿@model EmployeeManagementSystem.Models.Employee
-
+﻿@model EmployeeManagementSystem.ViewModels.EmployeeViewModel
 <h2>Edit Employee</h2>
 
 <form asp-action="Edit"
       method="post"
       enctype="multipart/form-data">
 
-    <input type="hidden" asp-for="EmployeeId" />
-    <input type="hidden" asp-for="PhotoPath" />
+    <input type="hidden" asp-for="Employee.EmployeeId" />
+    <input type="hidden" asp-for="Employee.PhotoPath" />
 
     <div class="mb-3">
 
@@ -17,9 +16,9 @@
 
         <br />
 
-        @if (!string.IsNullOrEmpty(Model.PhotoPath))
+        @if (!string.IsNullOrEmpty(Model.Employee.PhotoPath))
         {
-            <img src="@Model.PhotoPath"
+            <img src="@Model.Employee.PhotoPath"
                  width="120"
                  height="120"
                  class="rounded-circle border" />
@@ -55,53 +54,60 @@
     </div>
 
     <div class="mb-3">
-        <label asp-for="FirstName"></label>
-        <input asp-for="FirstName"
+        <label asp-for="Employee.FirstName"></label>
+        <input asp-for="Employee.FirstName"
                class="form-control" />
     </div>
 
     <div class="mb-3">
-        <label asp-for="LastName"></label>
-        <input asp-for="LastName"
+        <label asp-for="Employee.LastName"></label>
+        <input asp-for="Employee.LastName"
                class="form-control" />
     </div>
 
     <div class="mb-3">
-        <label asp-for="Email"></label>
-        <input asp-for="Email"
+        <label asp-for="Employee.Email"></label>
+        <input asp-for="Employee.Email"
                class="form-control" />
     </div>
 
     <div class="mb-3">
-        <label asp-for="PhoneNumber"></label>
-        <input asp-for="PhoneNumber"
+        <label asp-for="Employee.PhoneNumber"></label>
+        <input asp-for="Employee.PhoneNumber"
                class="form-control" />
     </div>
 
     <div class="mb-3">
-        <label asp-for="Department"></label>
-        <input asp-for="Department"
+        <label asp-for="Employee.Department"></label>
+        <select asp-for="Employee.Department"
+                asp-items="Model.Departments"
+                class="form-select">
+
+            <option value="">
+                -- Select Department --
+            </option>
+
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Employee.Salary"></label>
+        <input asp-for="Employee.Salary"
                class="form-control" />
     </div>
 
     <div class="mb-3">
-        <label asp-for="Salary"></label>
-        <input asp-for="Salary"
-               class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="JoiningDate"></label>
-        <input asp-for="JoiningDate"
+        <label asp-for="Employee.JoiningDate"></label>
+        <input asp-for="Employee.JoiningDate"
                type="date"
                class="form-control" />
     </div>
 
     <div class="form-check mb-3">
-        <input asp-for="IsActive"
+        <input asp-for="Employee.IsActive"
                class="form-check-input" />
 
-        <label asp-for="IsActive"
+        <label asp-for="Employee.IsActive"
                class="form-check-label">
         </label>
     </div>

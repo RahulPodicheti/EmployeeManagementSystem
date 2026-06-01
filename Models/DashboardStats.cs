@@ -7,5 +7,6 @@
         public int ActiveEmployees { get; set; }
 
         public int InactiveEmployees { get; set; }
+        public int TotalDepartments { get; set; }
     }
 }

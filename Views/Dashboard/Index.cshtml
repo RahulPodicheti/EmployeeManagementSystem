@@ -1,34 +1,73 @@
 ﻿@model EmployeeManagementSystem.Models.DashboardStats
 
-<h2 class="mb-4">Dashboard</h2>
+<h2 class="mb-4">
+    Dashboard
+</h2>
 
-<div class="row">
+<div class="row g-4">
 
-    <div class="col-md-4">
-        <div class="card text-center shadow">
-            <div class="card-body">
-                <h3>@Model.TotalEmployees</h3>
-                <p>Total Employees</p>
+    <div class="col-md-3">
+
+        <div class="card shadow border-primary">
+
+            <div class="card-body text-center">
+
+                <h1>@Model.TotalEmployees</h1>
+
+                <h5>Total Employees</h5>
+
             </div>
+
         </div>
+
     </div>
 
-    <div class="col-md-4">
-        <div class="card text-center shadow">
-            <div class="card-body">
-                <h3>@Model.ActiveEmployees</h3>
-                <p>Active Employees</p>
+    <div class="col-md-3">
+
+        <div class="card shadow border-success">
+
+            <div class="card-body text-center">
+
+                <h1>@Model.ActiveEmployees</h1>
+
+                <h5>Active Employees</h5>
+
             </div>
+
         </div>
+
     </div>
 
-    <div class="col-md-4">
-        <div class="card text-center shadow">
-            <div class="card-body">
-                <h3>@Model.InactiveEmployees</h3>
-                <p>Inactive Employees</p>
+    <div class="col-md-3">
+
+        <div class="card shadow border-danger">
+
+            <div class="card-body text-center">
+
+                <h1>@Model.InactiveEmployees</h1>
+
+                <h5>Inactive Employees</h5>
+
             </div>
+
         </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="card shadow border-warning">
+
+            <div class="card-body text-center">
+
+                <h1>@Model.TotalDepartments</h1>
+
+                <h5>Departments</h5>
+
+            </div>
+
+        </div>
+
     </div>
 
 </div>

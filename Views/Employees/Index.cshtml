@@ -2,16 +2,26 @@
 
 <h2>Employees</h2>
 
-<p>
+<div class="mb-3">
+
     @if (User.IsInRole("Admin"))
     {
-        <a asp-action="Create" class="btn btn-primary">
+        <a asp-action="Create"
+           class="btn btn-primary">
             Add Employee
         </a>
-    }
-</p>
 
-<form method="get" asp-action="Index" class="mb-3">
+        <a asp-action="ExportToExcel"
+           class="btn btn-success">
+            Export Excel
+        </a>
+    }
+
+</div>
+
+<form method="get"
+      asp-action="Index"
+      class="mb-3">
 
     <div class="row">
 
@@ -45,6 +55,7 @@
             <th>Email</th>
             <th>Department</th>
             <th>Salary</th>
+            <th>Status</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -74,7 +85,22 @@
                 <td>@employee.LastName</td>
                 <td>@employee.Email</td>
                 <td>@employee.Department</td>
-                <td>@employee.Salary</td>
+                <td>₹@employee.Salary</td>
+
+                <td>
+                    @if (employee.IsActive)
+                    {
+                        <span class="badge bg-success">
+                            Active
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">
+                            Inactive
+                        </span>
+                    }
+                </td>
 
                 <td>
 

@@ -9,11 +9,12 @@ namespace EmployeeManagementSystem.Controllers
     public class DepartmentController : Controller
     {
         private readonly IDepartmentService _departmentService;
+        private readonly ILogger<DepartmentController> _logger;
 
-        public DepartmentController(
-            IDepartmentService departmentService)
+        public DepartmentController(IDepartmentService departmentService, ILogger<DepartmentController> logger)
         {
             _departmentService = departmentService;
+            _logger = logger;
         }
 
         public async Task<IActionResult> Index()
@@ -47,7 +48,10 @@ namespace EmployeeManagementSystem.Controllers
                 return View(department);
 
             await _departmentService.AddDepartmentAsync(department);
-
+            TempData["Success"] = "Department created successfully.";
+            _logger.LogInformation(
+    "Department Created: {Department}",
+    department.DepartmentName);
             return RedirectToAction(nameof(Index));
         }
 
@@ -80,7 +84,10 @@ namespace EmployeeManagementSystem.Controllers
                 return View(department);
 
             await _departmentService.UpdateDepartmentAsync(department);
-
+            TempData["Success"] = "Department updated successfully.";
+            _logger.LogInformation(
+    "Department Updated: {Department}",
+    department.DepartmentName);
             return RedirectToAction(nameof(Index));
         }
 
@@ -100,7 +107,10 @@ namespace EmployeeManagementSystem.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _departmentService.DeleteDepartmentAsync(id);
-
+            TempData["Success"] = "Department deleted successfully.";
+            _logger.LogWarning(
+    "Department Deleted: {DepartmentId}",
+    id);
             return RedirectToAction(nameof(Index));
         }
     }
