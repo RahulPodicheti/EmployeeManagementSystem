@@ -25,6 +25,10 @@ namespace EmployeeManagementSystem.Controllers
         {
             return View();
         }
+        public IActionResult Register()
+        {
+            return View();
+        }
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
@@ -39,7 +43,7 @@ namespace EmployeeManagementSystem.Controllers
             if (user == null)
             {
                 ViewBag.Error =
-                    "Invalid Username or Password";
+                    "User does not exist or password is incorrect";
 
                 _logger.LogWarning(
                     "Failed Login Attempt: {Username}",
@@ -80,6 +84,34 @@ namespace EmployeeManagementSystem.Controllers
             return RedirectToAction(
                 "Index",
                 "Dashboard");
+        }
+        [HttpPost]
+        public async Task<IActionResult> Register(
+    RegisterViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            if (await _authService.UserExistsAsync(
+                model.Username))
+            {
+                ModelState.AddModelError(
+                    "",
+                    "Username already exists.");
+
+                return View(model);
+            }
+
+            await _authService.RegisterUserAsync(
+                model.Username,
+                model.Email,
+                model.Password,
+                "User");
+
+            TempData["Success"] =
+                "Registration successful. Please login.";
+
+            return RedirectToAction(nameof(Login));
         }
 
         public async Task<IActionResult> Logout()

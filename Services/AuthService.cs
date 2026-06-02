@@ -29,5 +29,39 @@ namespace EmployeeManagementSystem.Services
                 },
                 commandType: CommandType.StoredProcedure);
         }
+
+        public async Task<bool> UserExistsAsync(
+            string username)
+        {
+            using var connection = _context.CreateConnection();
+
+            var count = await connection.ExecuteScalarAsync<int>(
+                @"SELECT COUNT(*)
+                  FROM Users
+                  WHERE Username = @Username",
+                new { Username = username });
+
+            return count > 0;
+        }
+
+        public async Task RegisterUserAsync(
+            string username,
+            string email,
+            string password,
+            string role)
+        {
+            using var connection = _context.CreateConnection();
+
+            await connection.ExecuteAsync(
+                "sp_RegisterUser",
+                new
+                {
+                    Username = username,
+                    Email = email,
+                    Password = password,
+                    Role = role
+                },
+                commandType: CommandType.StoredProcedure);
+        }
     }
 }
